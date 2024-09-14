@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Главная страница
+{% endblock %}
+
+{% block content %}
+  <h2>Продукты</h2>
+
+  <table border="1" id="product-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Цена</th>
+      </tr>
+    </thead>
+    <tbody id="product-list">
+      <!-- Сюда будут добавляться продукты -->
+    </tbody>
+  </table>
+
+  <h3>Добавить новый продукт</h3>
+
+  <form id="product-form">
+    <label for="name">Название:</label>
+    <input type="text" id="name" name="name" required><br>
+    <label for="description">Описание:</label>
+    <input type="text" id="description" name="description" required><br>
+    <label for="price">Цена:</label>
+    <input type="number" step="0.01" id="price" name="price" required><br>
+    <button type="submit">Добавить продукт</button>
+  </form>
+
+  <script>
+    const productList = document.getElementById('product-list');
+    const productForm = document.getElementById('product-form');
+
+    // Функция для получения всех продуктов
+    function fetchProducts() {
+      fetch('/api/products/')
+        .then(response => response.json())
+        .then(data => {
+          productList.innerHTML = '';
+          data.forEach(product => {
+            const row = document.createElement('tr');
+
+            const idCell = document.createElement('td');
+            idCell.textContent = product.id;
+            row.appendChild(idCell);
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = product.name;
+            row.appendChild(nameCell);
+
+            const descriptionCell = document.createElement('td');
+            descriptionCell.textContent = product.description;
+            row.appendChild(descriptionCell);
+
+            const priceCell = document.createElement('td');
+            priceCell.textContent = `$${product.price}`;
+            row.appendChild(priceCell);
+
+            productList.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Обработка отправки формы
+    productForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(productForm);
+      const data = Object.fromEntries(formData.entries());
+
+      // Отправка данных на сервер
+      fetch('/api/products/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => {
+        if (response.ok) {
+          productForm.reset();
+          fetchProducts();
+        } else {
+          return response.json().then(data => {
+            console.error('Validation error:', data);
+          });
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    });
+
+    // Загрузка списка продуктов при загрузке страницы
+    window.onload = fetchProducts;
+  </script>
+{% endblock %}
