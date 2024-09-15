@@ -21,5 +21,10 @@ class Product(models.Model):
         decimal_places=PRICE_DECIMAL_PLACES
     )
 
+    class Meta:
+        ordering = ('name',)
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
+
     def __str__(self):
         return self.name[:CHAR_OUTPUT_LIMIT]
