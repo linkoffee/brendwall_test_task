@@ -28,6 +28,58 @@
 - Запрос POST должен корректно создавать новые продукты, а GET — возвращать список всех продуктов.
 - На HTML-странице должна быть форма для добавления продукта и таблица для отображения продуктов после добавления.
 
+## Важно
+> [!NOTE]
+> Образец заполнения файла `.env` можно посмотреть в [`.env.example`](https://github.com/linkoffee/brendwall_test_task/blob/main/.env.example)
+
+## Установка:
+1. Склонируйте репозиторий и перейдите в него:
+```console
+git clone https://github.com/linkoffee/brendwall_test_task.git
+```
+```console
+cd brendwall_test_task
+```
+
+2. Cоздать и активировать виртуальное окружение:
+```console
+python3 -m venv venv
+```
+- Если у вас Linux/macOS
+
+  ```console
+  source venv/bin/activate
+  ```
+- Если у вас windows
+
+  ```console
+  source venv/scripts/activate
+  ```
+
+3. Установить зависимости:
+```console
+pip install -r requirements.txt
+```
+```console
+python3 -m pip install --upgrade pip
+```
+
+4. Создайте файл `.env`, в нём должны быть указаны переменные окружения, образец заполнения можно посмотреть в файле [`.env.example`](https://github.com/linkoffee/brendwall_test_task/blob/main/.env.example), который лежит в корневой директории проекта.
+```s
+SECRET_KEY           # Секретный ключ Django
+ALLOWED_HOSTS        # Список доменных имен или IP-адресов
+DEBUG                # Флаг режима отладки
+```
+
+6. Выполнить миграции:
+```console
+python3 manage.py migrate
+```
+6. Запустить проект:
+```console
+python3 manage.py runserver
+```
+
 ---
 
 Author: [Mikhail Kopochinskiy](https://github.com/linkoffee)
